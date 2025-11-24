@@ -4,7 +4,7 @@
 resource "aws_s3_object" "python_scripts" {
   for_each = fileset("${var.app_bucket}/", "**")
   bucket = var.name_bucket
-  key    = "pipeline/${each.value}"
+  key    = "app/${each.value}"
   source = "${var.app_bucket}/${each.value}"
   etag   = filemd5("${var.app_bucket}/${each.value}")
 }

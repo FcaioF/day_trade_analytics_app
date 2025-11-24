@@ -1,0 +1,44 @@
+# Projeto 2 - Deploy do Stack de Treinamento Distribuído de Machine Learning com PySpark no Amazon EMR
+# Script Principal
+
+# Módulo de Armazenamento
+module "s3" {
+  source            = "./modules/s3"
+  name_bucket       = var.name_bucket
+  versioning_bucket = var.versioning_bucket
+  files_bucket      = var.files_bucket
+  files_data        = var.files_data
+  files_bash        = var.files_bash
+}
+
+# Módulo de Segurança
+module "iam" {
+  source = "./modules/iam"
+}
+
+module "sg_permite_http" {
+
+  source = "./modules/security-group"
+
+}
+
+module "dsa_ec2_instances" {
+  source = "./modules/ec2-instances"
+  ami_id         = "ami-0a0d9cf81c479446a"
+  instance_type  = "t2.micro"
+  instance_profile = module.iam.app_profile
+  service_role     = module.iam.iam_app_profile_role
+  name_bucket      = var.name_bucket
+  vpc_security_group_ids = [module.sg_permite_http.security_group_id]
+  user_data        = <<-EOF
+                    #!/bin/bash           
+                    aws s3 cp s3://${var.name_bucket}/scripts/* /$HOME/scripts/
+                    chmod +x /$HOME/scripts/bash_file.sh
+                    /$HOME/scripts/bash_file.sh
+                    EOF
+
+}
+
+
+
+

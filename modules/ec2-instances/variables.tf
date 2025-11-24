@@ -14,6 +14,16 @@ variable "vpc_security_group_ids" {
   type        = list(string)
 }
 
+variable "instance_profile" {
+  description = "perfil da instancia EC2"
+  type        = string
+}
+
+variable "aws_iam_role" {
+  description = ""
+  type        = string
+}
+
 variable "user_data" {
   description = "script que sera executado ao provisionar a instancia ec2"
   type     = string

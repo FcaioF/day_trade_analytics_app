@@ -5,6 +5,8 @@ resource "aws_instance" "dsa_instance" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   vpc_security_group_ids = var.vpc_security_group_ids
+  iam_instance_profile   = var.instance_profile
+  aws_iam_role           = var.aws_iam_role
   user_data = var.user_data
   tags = {
     Name = "lab3-t5-terraform-${count.index}"

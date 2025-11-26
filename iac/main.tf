@@ -13,6 +13,7 @@ module "s3" {
 # Módulo de Segurança
 module "iam" {
   source = "./modules/iam"
+  name_bucket = var.name_bucket
 }
 
 module "sg_permite_http" {

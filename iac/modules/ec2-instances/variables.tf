@@ -19,11 +19,6 @@ variable "instance_profile" {
   type        = string
 }
 
-variable "aws_iam_role" {
-  description = ""
-  type        = string
-}
-
 variable "user_data" {
   description = "script que sera executado ao provisionar a instancia ec2"
   type     = string

@@ -6,8 +6,7 @@ module "s3" {
   source            = "./modules/s3"
   name_bucket       = var.name_bucket
   versioning_bucket = var.versioning_bucket
-  files_bucket      = var.files_bucket
-  files_data        = var.files_data
+  app_bucket        = var.app_bucket
   files_bash        = var.files_bash
 }
 
@@ -27,8 +26,6 @@ module "dsa_ec2_instances" {
   ami_id         = "ami-0a0d9cf81c479446a"
   instance_type  = "t2.micro"
   instance_profile = module.iam.app_profile
-  service_role     = module.iam.iam_app_profile_role
-  name_bucket      = var.name_bucket
   vpc_security_group_ids = [module.sg_permite_http.security_group_id]
   user_data        = <<-EOF
                     #!/bin/bash           

@@ -28,7 +28,7 @@ resource "aws_security_group" "sg_allow_http" {
     description = "Inbound Rule"
     from_port = 22
     to_port = 22
-    protocol = "ssh"
+    protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
   }

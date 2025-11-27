@@ -30,10 +30,10 @@ module "dsa_ec2_instances" {
   vpc_security_group_ids = [module.sg_permite_http.security_group_id]
   user_data        = <<-EOF
                     #!/bin/bash           
-                    aws s3 cp s3://${var.name_bucket}/scripts/* /$HOME/scripts/
+                    aws s3 cp s3://${var.name_bucket}/scripts/ /$HOME/scripts/ --recursive
                     chmod +x /$HOME/scripts/bash_file.sh
                     /$HOME/scripts/bash_file.sh
-                    EOF
+EOF
 
 }
 

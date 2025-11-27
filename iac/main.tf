@@ -31,7 +31,11 @@ module "dsa_ec2_instances" {
   user_data        = <<-EOF
                     #!/bin/bash           
                     aws s3 cp s3://${var.name_bucket}/scripts/ /tmp/scripts/ --recursive
-                    chmod +x /tmp/scripts/bash_file.sh
+                    chmod -R +x /tmp/scripts/
+                    
+                    aws s3 cp s3://${var.name_bucket}/app/ /tmp/app/ --recursive
+                    chmod -R +x /tmp/app/
+
                     /tmp/scripts/bash_file.sh
 EOF
 

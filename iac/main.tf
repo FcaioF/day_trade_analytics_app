@@ -26,7 +26,7 @@ module "dsa_ec2_instances" {
   source = "./modules/ec2-instances"
   ami_id         = "ami-0a0d9cf81c479446a"
   instance_type  = "t2.micro"
-  instance_profile = module.iam.app_profile
+  instance_profile = module.iam.ec2_s3_reader_profile_name
   vpc_security_group_ids = [module.sg_permite_http.security_group_id]
   user_data        = <<-EOF
                     #!/bin/bash           

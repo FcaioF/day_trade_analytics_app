@@ -1,135 +1,137 @@
 Day Trade Analytics App
 
-Português (BR): veja `README-BR.md` para a versão em Português.
+English: veja a versão em `README.md` para o conteúdo em Inglês.
 
-A sample project that demonstrates a real-time day trade analytics web application built with Streamlit, Plotly, and multiple AI agents integrated through Groq. The project includes Terraform infrastructure-as-code modules to deploy an EC2 instance and S3 storage on AWS, plus a Dockerfile and scripts to run locally and inside containers.
+Um projeto de exemplo que demonstra uma aplicação de analytics em tempo real para Day Trade construída com Streamlit, Plotly e múltiplos agentes de IA integrados via Groq. O projeto inclui módulos Terraform para provisionar uma instância EC2 e armazenamento S3 na AWS, além de um Dockerfile e scripts para executar localmente ou em contêineres.
 
-This repository is a portfolio-ready project aimed at showcasing a full-stack data analytics deployment with automated infra provisioning.
-
----
-
-## 🚀 Highlights
-- Real-time stock analytics app using Yahoo Finance (`yfinance`) and interactive visualizations (`plotly`, `streamlit`).
-- AI agents and tools integration (Groq, DuckDuckGo, YFinance tools) for insights and web search augmentation.
-- Infrastructure-as-code (Terraform) modules for S3, IAM, EC2, and Security Group provisioning.
-- Containerized environment using `Dockerfile` with Terraform and AWS CLI pre-installed for portability.
+Este repositório é adequado como um projeto de portfólio, mostrando um deployment full-stack com infraestrutura automatizada.
 
 ---
 
-## Table of Contents
-1. [Demo / Screenshots](#-demo--screenshots)
-2. [Technology Stack](#-technology-stack)
-3. [Architecture](#-architecture)
-4. [Local Run (Developer)](#-local-run-developer)
-5. [Docker Run](#-docker-run)
-6. [Deploy to AWS (Terraform)](#-deploy-to-aws-terraform)
-7. [Project Structure](#-project-structure)
-8. [Key Files & Modules](#-key-files--modules)
-9. [What's Included / Features](#-whats-included--features)
-10. [Future Improvements & Roadmap](#-future-improvements--roadmap)
-11. [About / Contact](#-about--contact)
+## 🚀 Destaques
+- Aplicação de analytics em tempo real usando Yahoo Finance (`yfinance`) e visualizações interativas (`plotly`, `streamlit`).
+- Integração com agentes de IA (Groq, DuckDuckGo, YFinance tools) para recomendações e enriquecimento com pesquisa na web.
+- Infraestrutura como código (Terraform) com módulos para S3, IAM, EC2 e Security Group.
+- Ambiente em contêiner (`Dockerfile`) com Terraform e AWS CLI pré-instalados.
 
 ---
 
-## 📺 Demo / Screenshots
-Add your screenshots or GIFs here so visitors see the UI and graphs. For example, add a screenshot of Streamlit UI with candlestick charts and mobile/desktop views.
+## Índice
+1. [Demonstração / Capturas de Tela](#-demonstração--capturas-de-tela)
+2. [Tecnologias](#-tecnologias)
+3. [Arquitetura](#-arquitetura)
+4. [Execução Local (Desenvolvimento)](#-execução-local-desenvolvimento)
+5. [Execução em Docker](#-execução-em-docker)
+6. [Deploy na AWS (Terraform)](#-deploy-na-aws-terraform)
+7. [Estrutura do Projeto](#-estrutura-do-projeto)
+8. [Arquivos e Módulos Principais](#-arquivos-e-módulos-principais)
+9. [Recursos / O que foi implementado](#-recursos--o-que-foi-implementado)
+10. [Melhorias Futuras e Roadmap](#-melhorias-futuras-e-roadmap)
+11. [Sobre / Contato](#-sobre--contato)
 
 ---
 
-## 🧭 Technology Stack
-- Python 3.11+ (Streamlit app)
-- Streamlit (application UI)
-- Plotly (interactive visualizations)
-- yfinance (stock historic data)
-- Groq (AI model integration)
-- Terraform (infrastructure as code)
+## 📺 Demonstração / Capturas de Tela
+Adicione capturas de tela ou GIFs para demonstrar a interface e as visualizações. Por exemplo, adicione uma captura do Streamlit com o gráfico candlestick e as análises geradas por IA.
+
+---
+
+## 🧭 Tecnologias
+- Python 3.11+ (aplicação Streamlit)
+- Streamlit (UI da aplicação)
+- Plotly (visualizações interativas)
+- yfinance (dados históricos de ações)
+- Groq (integração com modelos de IA)
+- Terraform (IaC)
 - AWS (S3, EC2, IAM)
-- Docker (containerized execution)
+- Docker (ambiente containerizado)
 
 ---
 
-## 🏗 Architecture
-The app workflow:
-- The Streamlit app in `iac/app/dsa_app.py` fetches stock data using `yfinance` and renders charts with Plotly.
-- AI agents are implemented via the `phi.agent` helper with `Groq` model integration for insights.
-- Data & scripts are packaged and uploaded to S3 via Terraform in `iac/modules/s3`.
-- EC2 instances are provisioned via `iac/modules/ec2-instances` with an IAM instance profile attached for S3 access.
-- A startup `user_data` script downloads files from S3 and runs the Streamlit app.
+## 🏗 Arquitetura
+Fluxo da aplicação:
+- O app Streamlit `iac/app/dsa_app.py` busca dados de ações via `yfinance` e renderiza gráficos com Plotly.
+- Agentes de IA são implementados com `phi.agent` e `Groq` para gerar recomendações e sumarizações.
+- Arquivos e scripts são enviados para o S3 via os módulos Terraform em `iac/modules/s3`.
+- Instâncias EC2 são provisioonadas via `iac/modules/ec2-instances` e recebem um `instance_profile` (IAM) para acessar o bucket S3.
+- Um script de inicialização (`user_data`) baixa os arquivos do S3 e executa o aplicativo Streamlit.
 
 ---
 
-## 🧪 Local Run (Developer)
-These steps are for local development (without AWS):
+## 🧪 Execução Local (Desenvolvimento)
+Esses passos são para desenvolvimento local (sem AWS):
 
-1. Install dependencies into a virtual environment:
+1. Crie e ative um ambiente virtual:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+```
+
+2. Instale as dependências:
+
+```powershell
 pip install --upgrade pip
 pip install -r iac\scripts\requirements.txt
 ```
 
-2. Run the Streamlit app locally:
+3. Execute o app Streamlit localmente:
 
 ```powershell
 cd iac\app
 streamlit run dsa_app.py
 ```
 
-3. Open the browser to http://localhost:8501 and use the UI by entering a stock ticker (e.g., MSFT, TSLA).
+4. Abra o navegador em http://localhost:8501 e digite um ticker (por exemplo, MSFT, TSLA).
 
 ---
 
-## 🐳 Docker Run
-Build and run the provided Docker image with Terraform and the AWS CLI pre-installed. This is useful for consistent development environments or for running Terraform where Python & other dependencies aren't configured locally.
+## 🐳 Execução em Docker
+Construa e execute a imagem Docker que já inclui Terraform e AWS CLI. Útil para ambientes reproduzíveis ou quando o host não possui as dependências necessárias.
 
 ```powershell
-# Build the image
-cd .
-# from the repo root
+# Construir a imagem (da raiz do repositório)
 docker build -t dsa-terraform-image:latest .
 
-# Run the container and mount the iac folder into /iac
-# On Windows, replace the volume path with the absolute path if needed.
-
+# Executar o container e montar a pasta iac em /iac
 docker run -dit --name dsa-p1 -v ${PWD}:/iac dsa-terraform-image:latest /bin/bash
-```
 
-Once inside the container, you can run `terraform` and `aws` commands.
+# A partir do container, você pode executar comandos terraform e aws,
+# ou iniciar o Streamlit se preferir.
+```
 
 ---
 
-## 🔧 Deploy to AWS (Terraform)
-This repo includes a working Terraform configuration that creates:
-- S3 bucket (with versioning & objects upload)
-- IAM policy, role and instance profile for an EC2 instance to access S3
-- Security Group (allow 80, 8501, 22)
-- EC2 instance that downloads code from S3 and runs the Streamlit app
+## 🔧 Deploy na AWS (Terraform)
+Este repositório inclui configurações Terraform em `iac/` para:
+- Criar um bucket S3 (com versionamento e upload de objetos)
+- Criar IAM policy e role para permitir que a EC2 acesse o bucket S3
+- Criar um Security Group (portas 80, 8501 e 22)
+- Criar uma instância EC2 que baixa e executa o Streamlit a partir do S3
 
-Before applying Terraform, make sure to have AWS credentials available (either via environment or `~/.aws/credentials`).
+Antes de aplicar o Terraform, certifique-se de ter as credenciais AWS (via ambiente ou `~/.aws/credentials`).
 
-Basic commands (from `iac` folder):
+Comandos básicos (a partir da pasta `iac`):
 
 ```powershell
 cd iac
 terraform init
-terraform plan -var "name_bucket=your-unique-bucket-name" -var "groq_api_key=YOUR_GROQ_KEY"
-terraform apply -var "name_bucket=your-unique-bucket-name" -var "groq_api_key=YOUR_GROQ_KEY" -auto-approve
+terraform plan -var "name_bucket=nome-unico-do-bucket" -var "groq_api_key=SUA_CHAVE_GROQ"
+terraform apply -var "name_bucket=nome-unico-do-bucket" -var "groq_api_key=SUA_CHAVE_GROQ" -auto-approve
 ```
 
-Notes:
-- The app uses `Groq` and needs the API key set as a Terraform variable which is then exported on the EC2 `user_data` script.
-- The S3 module will upload all files in `iac/app` and `iac/scripts` into the bucket so the EC2 can fetch them.
-- `security-group` allows port 8501 which is used by Streamlit.
+Notas:
+- A aplicação usa `Groq` e necessita da chave da API (Groq) configurada como variável Terraform; proteja este valor.
+- O módulo S3 fará upload dos arquivos nas pastas `iac/app` e `iac/scripts` para o bucket criado.
+- O Security Group permite a porta 8501, usada pelo Streamlit.
 
 ---
 
-## 📁 Project Structure
+## 📁 Estrutura do Projeto
 ```
 ./
 ├─ Dockerfile
-├─ LEIAME.txt (Portuguese instructions)
+├─ LEIAME.txt (instruções em Português)
 ├─ iac/
 │  ├─ app/dsa_app.py
 │  ├─ scripts/bash_file.sh
@@ -145,38 +147,73 @@ Notes:
 
 ---
 
-## 📂 Key Files & Modules
-- `iac/app/dsa_app.py` — Application source code (Streamlit). Reads stock data, uses AI agents for insights and renders Plotly charts.
-- `iac/scripts/bash_file.sh` — Script that configures environment and runs the Streamlit app on EC2.
-- `iac/modules/s3` — Creates bucket and uploads app & script files.
-- `iac/modules/iam` — IAM role/policy for EC2 to access S3.
-- `iac/modules/ec2-instances` — EC2 instance resource using AMI & instance profile.
-- `Dockerfile` — Container with Terraform and AWS CLI pre-installed.
+## 📂 Arquivos e Módulos Principais
+- `iac/app/dsa_app.py` — Código do app (Streamlit). Busca dados com yfinance, aplica agentes de IA e exibe gráficos com Plotly.
+- `iac/scripts/bash_file.sh` — Script de inicialização que configura o ambiente e inicia o Streamlit na EC2.
+- `iac/modules/s3` — Cria bucket S3 e faz upload dos arquivos do app.
+- `iac/modules/iam` — Cria roles e políticas para a EC2 acessar o S3.
+- `iac/modules/ec2-instances` — Cria instância EC2 e associa perfil de instância.
+- `Dockerfile` — Imagem Ubuntu com Terraform e AWS CLI pré-instalados.
 
 ---
 
-## 🔮 Features & What I Built
-- Interactive Streamlit app for tracking stocks and viewing candlestick charts.
-- Agent-based AI augmentation using Groq + tools for fetching news and financial insights.
-- End-to-end provisioning with Terraform to automate deployment to AWS.
+## 🔮 Recursos & O que foi implementado
+- Aplicação Streamlit interativa para acompanhamento de ações e gráficos candlestick.
+- Integração com agentes de IA (Groq) para enriquecer a análise com notícias e recomendações.
+- Infraestrutura provisionada com Terraform para automação do deploy na AWS.
 
 ---
 
-## 📈 Future Improvements & Roadmap
-- Add automated unit tests for UI & data fetching.
-- Add GitHub Actions CI/CD to build Docker images and run Terraform plan with checks.
-- Implement HTTPS, load balancer, and autoscaling for EC2 (or switch to ECS/EKS).
-- Improve data caching and historical analysis; store data in a database (e.g., RDS or DynamoDB).
+## 📈 Melhorias Futuras & Roadmap
+- Adicionar testes automatizados para a UI e para a coleta de dados (mock yfinance).
+- Criar CI/CD (GitHub Actions) para build de imagem Docker e `terraform plan` com validações.
+- Implementar HTTPS, balanceador de carga e escalabilidade (ou migração para ECS/EKS).
+- Melhorar cache e análise histórica; persistir dados em um banco de dados gerenciado (RDS ou DynamoDB).
 
 ---
 
-## 👤 About / Contact
-Built by FcaioF — Data Science & DevOps demo project. For questions, feature requests, or contributions, open an issue or send a message.
-
-### Contributing
-Contributions are welcome — see `CONTRIBUTING.md` for details on how to open a PR, run tests, and add code or documentation.
+## 👤 Sobre / Contato
+Projetado por FcaioF — Projeto de demonstração de Data Science & DevOps. Para dúvidas ou contribuições, abra uma issue ou envie mensagem.
 
 ---
 
-## License
-See `LICENSE` for licensing details (MIT license included).
+## Como apresentar no seu portfólio
+- Adicione uma captura ou GIF no topo do README mostrando a interface em ação.
+- Inclua um parágrafo curto: "O que eu construí" e destaque suas responsabilidades e decisões técnicas.
+- Se tiver um demo público, inclua o link direto ao vivo com instruções para testar.
+
+---
+
+## Contribuindo
+Seja bem-vindo(a)! Siga as instruções em `CONTRIBUTING.md` para abrir PRs, rodar testes e manter o estilo do código.
+
+---
+
+## Licença
+Veja `LICENSE` para detalhes de licenciamento (MIT).
+# Day Trade Analytics App (Português)
+
+Este projeto demonstra uma aplicação de analytics em tempo real para Day Trade construída com Streamlit, Plotly e agentes de IA integrados via Groq. Também inclui código Terraform para provisionar EC2 e S3 na AWS, além de scripts e um Dockerfile para execução local ou em contêiner.
+
+## Começando Rápido (Windows)
+
+1. Construir a imagem Docker:
+
+```powershell
+docker build -t dsa-terraform-image:p1 .
+```
+
+2. Criar o container Docker (monte a pasta `iac` como volume):
+
+```powershell
+docker run -dit --name dsa-p1 -v C:\full\path\to\repo\iac:/iac dsa-terraform-image:p1 /bin/bash
+```
+
+3. (Opcional) Verifique as versões do Terraform e do AWS CLI dentro do container:
+
+```bash
+terraform version
+aws --version
+```
+
+As instruções completas para rodar localmente, em Docker, e fazer deploy com Terraform estão disponíveis em `README.md` (em inglês).

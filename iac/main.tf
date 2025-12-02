@@ -38,7 +38,7 @@ module "dsa_ec2_instances" {
                     chmod -R +x /tmp/app/
 
                     #cria env para chave api groq
-                    echo "export GROQ_API_KEY=${var.groq_api_key}"
+                    export GROQ_API_KEY=${var.groq_api_key}
                     
                     yum install dos2unix -y # Instala o dos2unix para converter arquivos de texto
                     dos2unix /tmp/scripts/bash_file.sh # Converte o script bash para o formato Unix/Linux

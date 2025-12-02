@@ -21,3 +21,8 @@ variable "files_bash" {
   description = "Pasta de onde os scripts bash serão obtidos"
   default     = "./scripts"
 }
+
+variable "groq_api_key" {
+  type        = string
+  description = "Chave de API do Groq"
+}

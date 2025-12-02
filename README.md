@@ -1,10 +1,7 @@
-Day Trade Analytics App
+# Day Trade Analytics App
 
-English: veja a versão em `README.md` para o conteúdo em Inglês.
+Este projeto demonstra uma aplicação de analytics em tempo real para Day Trade construída com Streamlit, Plotly e agentes de IA integrados via Groq. Também inclui código Terraform para provisionar EC2 e S3 na AWS, além de scripts e um Dockerfile para execução local ou em contêiner.
 
-Um projeto de exemplo que demonstra uma aplicação de analytics em tempo real para Day Trade construída com Streamlit, Plotly e múltiplos agentes de IA integrados via Groq. O projeto inclui módulos Terraform para provisionar uma instância EC2 e armazenamento S3 na AWS, além de um Dockerfile e scripts para executar localmente ou em contêineres.
-
-Este repositório é adequado como um projeto de portfólio, mostrando um deployment full-stack com infraestrutura automatizada.
 
 ---
 
@@ -31,8 +28,9 @@ Este repositório é adequado como um projeto de portfólio, mostrando um deploy
 
 ---
 
-## 📺 Demonstração / Capturas de Tela
-Adicione capturas de tela ou GIFs para demonstrar a interface e as visualizações. Por exemplo, adicione uma captura do Streamlit com o gráfico candlestick e as análises geradas por IA.
+## 📺 Demonstração
+
+![Demo](src/portfolio.gif)
 
 ---
 
@@ -91,10 +89,10 @@ Construa e execute a imagem Docker que já inclui Terraform e AWS CLI. Útil par
 
 ```powershell
 # Construir a imagem (da raiz do repositório)
-docker build -t dsa-terraform-image:latest .
+docker build -t app-image:latest .
 
 # Executar o container e montar a pasta iac em /iac
-docker run -dit --name dsa-p1 -v ${PWD}:/iac dsa-terraform-image:latest /bin/bash
+docker run -dit --name app-p1 -v ${PWD}:/iac app-image:latest /bin/bash
 
 # A partir do container, você pode executar comandos terraform e aws,
 # ou iniciar o Streamlit se preferir.
@@ -131,7 +129,7 @@ Notas:
 ```
 ./
 ├─ Dockerfile
-├─ LEIAME.txt (instruções em Português)
+├─ LEIAME.txt
 ├─ iac/
 │  ├─ app/dsa_app.py
 │  ├─ scripts/bash_file.sh
@@ -173,47 +171,8 @@ Notas:
 ---
 
 ## 👤 Sobre / Contato
-Projetado por FcaioF — Projeto de demonstração de Data Science & DevOps. Para dúvidas ou contribuições, abra uma issue ou envie mensagem.
+Projeto de demonstração de Data Science & DevOps.
 
 ---
 
-## Como apresentar no seu portfólio
-- Adicione uma captura ou GIF no topo do README mostrando a interface em ação.
-- Inclua um parágrafo curto: "O que eu construí" e destaque suas responsabilidades e decisões técnicas.
-- Se tiver um demo público, inclua o link direto ao vivo com instruções para testar.
 
----
-
-## Contribuindo
-Seja bem-vindo(a)! Siga as instruções em `CONTRIBUTING.md` para abrir PRs, rodar testes e manter o estilo do código.
-
----
-
-## Licença
-Veja `LICENSE` para detalhes de licenciamento (MIT).
-# Day Trade Analytics App (Português)
-
-Este projeto demonstra uma aplicação de analytics em tempo real para Day Trade construída com Streamlit, Plotly e agentes de IA integrados via Groq. Também inclui código Terraform para provisionar EC2 e S3 na AWS, além de scripts e um Dockerfile para execução local ou em contêiner.
-
-## Começando Rápido (Windows)
-
-1. Construir a imagem Docker:
-
-```powershell
-docker build -t dsa-terraform-image:p1 .
-```
-
-2. Criar o container Docker (monte a pasta `iac` como volume):
-
-```powershell
-docker run -dit --name dsa-p1 -v C:\full\path\to\repo\iac:/iac dsa-terraform-image:p1 /bin/bash
-```
-
-3. (Opcional) Verifique as versões do Terraform e do AWS CLI dentro do container:
-
-```bash
-terraform version
-aws --version
-```
-
-As instruções completas para rodar localmente, em Docker, e fazer deploy com Terraform estão disponíveis em `README.md` (em inglês).

@@ -29,17 +29,27 @@ module "dsa_ec2_instances" {
   instance_profile = module.iam.ec2_s3_reader_profile_name
   vpc_security_group_ids = [module.sg_permite_http.security_group_id]
   user_data        = <<-EOF
-                    #!/bin/bash           
+                    #!/bin/bash 
+                    
                     aws s3 cp s3://${var.name_bucket}/scripts/ /tmp/scripts/ --recursive
                     chmod -R +x /tmp/scripts/
                     
                     aws s3 cp s3://${var.name_bucket}/app/ /tmp/app/ --recursive
                     chmod -R +x /tmp/app/
 
-                    /tmp/scripts/bash_file.sh
+                    
+                    yum install dos2unix -y # Instala o dos2unix para converter arquivos de texto
+                    dos2unix /tmp/scripts/bash_file.sh # Converte o script bash para o formato Unix/Linux
+                    
+                    /tmp/scripts/bash_file.sh # Executa o script bash
 EOF
 
 }
+
+
+
+
+
 
 
 

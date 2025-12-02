@@ -4,6 +4,7 @@
 
 # Imports
 import re
+import os
 import streamlit as st
 import yfinance as yf
 import plotly.graph_objects as go
@@ -12,16 +13,16 @@ from phi.agent import Agent
 from phi.model.groq import Groq
 from phi.tools.yfinance import YFinanceTools
 from phi.tools.duckduckgo import DuckDuckGo
-from dotenv import load_dotenv
+
 
 # Carrega o arquivo de variáveis de ambiente
-load_dotenv()
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 ########## Analytics ##########
 
 # Usa o cache de dados do Streamlit para armazenar os resultados da função e evitar reprocessamento
 # Define a função que extrai dados históricos de uma ação com base no ticker e período especificado
-@st.cache_data
+@st.cache_data(ttl=3600)
 def dsa_extrai_dados(ticker, period="6mo"):
 
     # Cria um objeto Ticker do Yahoo Finance para a ação especificada
@@ -104,13 +105,13 @@ def dsa_plot_volume(hist, ticker):
 # Agentes de IA 
 dsa_agente_web_search = Agent(name="DSA Agente Web Search",
                               role="Fazer busca na web",
-                              model=Groq(id="deepseek-r1-distill-llama-70b"),
+                              model=Groq(id="openai/gpt-oss-120b"),
                               tools=[DuckDuckGo()],
                               instructions=["Sempre inclua as fontes"],
                               show_tool_calls=True, markdown=True)
 
 dsa_agente_financeiro = Agent(name="DSA Agente Financeiro",
-                              model=Groq(id="deepseek-r1-distill-llama-70b"),
+                              model=Groq(id="openai/gpt-oss-120b"),
                               tools=[YFinanceTools(stock_price=True,
                                                    analyst_recommendations=True,
                                                    stock_fundamentals=True,
@@ -119,7 +120,7 @@ dsa_agente_financeiro = Agent(name="DSA Agente Financeiro",
                               show_tool_calls=True, markdown=True)
 
 multi_ai_agent = Agent(team=[dsa_agente_web_search, dsa_agente_financeiro],
-                       model=Groq(id="llama-3.3-70b-versatile"),
+                       model=Groq(id="openai/gpt-oss-120b"),
                        instructions=["Sempre inclua as fontes", "Use tabelas para mostrar os dados"],
                        show_tool_calls=True, markdown=True)
 
